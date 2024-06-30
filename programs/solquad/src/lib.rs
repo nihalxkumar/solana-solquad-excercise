@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("5sFUqUTjAMJARrEafMX8f4J1LagdUQ9Y8TR8HwGNHkU8");
+declare_id!("GxrKHoV87BBTg8dnoh1zZDDt8sf6kqedSic1FRbMdHWZ");
 
 #[program]
 pub mod solquad {
@@ -73,7 +73,7 @@ pub mod solquad {
         let escrow_account = &mut ctx.accounts.escrow_account;
         let pool_account = &mut ctx.accounts.pool_account;
         let project_account = &mut ctx.accounts.project_account;
-  
+
         for i in 0..escrow_account.project_reciever_addresses.len() {
             let distributable_amt: u64;
             let votes: u64;
@@ -209,5 +209,5 @@ pub struct Project {
 pub struct Voter {
     pub voter: Pubkey,
     pub voted_for: Pubkey,
-    pub token_amount: u64
+    pub token_amount: u64,
 }
