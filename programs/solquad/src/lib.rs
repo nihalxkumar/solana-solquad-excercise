@@ -4,6 +4,8 @@ declare_id!("GxrKHoV87BBTg8dnoh1zZDDt8sf6kqedSic1FRbMdHWZ");
 
 #[program]
 pub mod solquad {
+    use Errors::ProjectAlreadyExists;
+
     use super::*;
 
     pub fn initialize_escrow(ctx: Context<InitializeEscrow>, amount: u64) -> Result<()> {
@@ -41,18 +43,20 @@ pub mod solquad {
         let pool_account = &mut ctx.accounts.pool_account;
         let project_account = &ctx.accounts.project_account;
 
-        pool_account.projects.push(
-            project_account.project_owner
-        );
-        pool_account.total_projects += 1;
-
-        escrow_account.project_reciever_addresses.push(
-            project_account.project_owner
-        );
-
+        if !pool_account.projects.contains(&project_account.project_owner) {
+            pool_account.projects.push(
+                project_account.project_owner
+            );
+            pool_account.total_projects += 1;
+            escrow_account.project_reciever_addresses.push(
+                project_account.project_owner
+            );
+        } else {
+            return Err(Errors::ProjectAlreadyExists.into());
+        }
         Ok(())
     }
-
+    
     pub fn vote_for_project(ctx: Context<VoteForProject>, amount: u64) -> Result<()> {
         let pool_account = &mut ctx.accounts.pool_account;
         let project_account = &mut ctx.accounts.project_account;
@@ -93,7 +97,6 @@ pub mod solquad {
 
             project_account.distributed_amt = distributable_amt;
         }
-
         Ok(())
     }
 }
@@ -185,7 +188,7 @@ pub struct Escrow {
     pub project_reciever_addresses: Vec<Pubkey>,
 }
 
-// Pool for each project 
+// Pool for each project
 #[account]
 pub struct Pool {
     pub pool_creator: Pubkey,
@@ -211,3 +214,11 @@ pub struct Voter {
     pub voted_for: Pubkey,
     pub token_amount: u64,
 }
+
+// Error handling
+#[error_code]
+pub enum Errors {
+    #[msg("Project already exists in the pool")]
+    ProjectAlreadyExists,
+}
+

@@ -21,3 +21,4 @@ idl-build = [
 [dependencies]
 anchor-lang = "0.29.0"
 anchor-spl = "0.29.0"
+thiserror = "1.0"
