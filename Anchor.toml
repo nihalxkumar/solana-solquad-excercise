@@ -15,7 +15,7 @@ cluster = "Localnet"
 wallet = "~/.config/solana/id.json"
 
 [provider.devnet]
-cluster = "Localnet"
+cluster = "Devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
