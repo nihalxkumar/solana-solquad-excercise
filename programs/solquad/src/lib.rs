@@ -90,8 +90,17 @@ pub mod solquad {
             }
 
             if votes != 0 {
-                distributable_amt = (votes / pool_account.total_votes) * escrow_account.creator_deposit_amount as u64;
-            } else {
+                if let Some(votes_ratio) = votes.checked_div(pool_account.total_votes) {
+                    // Use checked_mul to safely multiply by escrow_account.creator_deposit_amount
+                    if let Some(amt) = votes_ratio.checked_mul(escrow_account.creator_deposit_amount) {
+                        distributable_amt = amt;
+                    } else {
+                        return Err(Errors::ArithmeticOverflow.into());
+                    }
+                } else {
+                    return Err(Errors::ArithmeticOverflow.into());
+                } // distributable_amt = (votes / pool_account.total_votes) * escrow_account.creator_deposit_amount as u64;
+                else {
                 distributable_amt = 0;
             }
 
@@ -224,5 +233,7 @@ pub struct Voter {
 pub enum Errors {
     #[msg("Project already exists in the pool")]
     ProjectAlreadyExists,
+    #[msg("Arithmetic overflow during escrow distribution")]
+    ArithmeticOverflow,
 }
 
