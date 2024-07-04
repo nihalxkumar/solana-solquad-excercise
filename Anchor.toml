@@ -2,10 +2,10 @@
 seeds = false
 skip-lint = false
 [programs.localnet]
-solquad = "GxrKHoV87BBTg8dnoh1zZDDt8sf6kqedSic1FRbMdHWZ"
+solquad = "9vsSxUro9oWpHUFgt3wKpcyyLMBRhV6ve6wRq7Qj3J4D"
 
 [programs.devnet]
-solquad = "GxrKHoV87BBTg8dnoh1zZDDt8sf6kqedSic1FRbMdHWZ"
+solquad = "9vsSxUro9oWpHUFgt3wKpcyyLMBRhV6ve6wRq7Qj3J4D"
 
 [registry]
 url = "https://api.apr.dev"
