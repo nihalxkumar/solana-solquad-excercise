@@ -44,19 +44,15 @@ pub mod solquad {
         let project_account = &ctx.accounts.project_account;
 
         if !pool_account.projects.contains(&project_account.project_owner) {
-            pool_account.projects.push(
-                project_account.project_owner
-            );
+            pool_account.projects.push(project_account.project_owner);
             pool_account.total_projects += 1;
-            escrow_account.project_reciever_addresses.push(
-                project_account.project_owner
-            );
+            escrow_account.project_reciever_addresses.push(project_account.project_owner);
         } else {
             return Err(Errors::ProjectAlreadyExists.into());
         }
         Ok(())
     }
-    
+
     pub fn vote_for_project(ctx: Context<VoteForProject>, amount: u64) -> Result<()> {
         let pool_account = &mut ctx.accounts.pool_account;
         let project_account = &mut ctx.accounts.project_account;
@@ -91,7 +87,6 @@ pub mod solquad {
 
             if votes != 0 {
                 if let Some(votes_ratio) = votes.checked_div(pool_account.total_votes) {
-                    // Use checked_mul to safely multiply by escrow_account.creator_deposit_amount
                     if let Some(amt) = votes_ratio.checked_mul(escrow_account.creator_deposit_amount) {
                         distributable_amt = amt;
                     } else {
@@ -99,13 +94,14 @@ pub mod solquad {
                     }
                 } else {
                     return Err(Errors::ArithmeticOverflow.into());
-                } // distributable_amt = (votes / pool_account.total_votes) * escrow_account.creator_deposit_amount as u64;
-                else {
+                }
+            } else {
                 distributable_amt = 0;
             }
 
             project_account.distributed_amt = distributable_amt;
         }
+
         Ok(())
     }
 }
