@@ -10,11 +10,7 @@ solquad = "GxrKHoV87BBTg8dnoh1zZDDt8sf6kqedSic1FRbMdHWZ"
 [registry]
 url = "https://api.apr.dev"
 
-[provider.localnet]
-cluster = "Localnet"
-wallet = "~/.config/solana/id.json"
-
-[provider.devnet]
+[provider]
 cluster = "Devnet"
 wallet = "~/.config/solana/id.json"
 
